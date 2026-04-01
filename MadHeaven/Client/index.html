@@ -23,7 +23,7 @@
   </script>
 
   <!-- Unity Loader -->
-  <script src="Build/MadHeaven.loader.js"></script>
+  <script src="Build/Client.loader.js"></script>
 </head>
 <body>
   <canvas id="unity-canvas" width="960" height="600"></canvas>
@@ -31,9 +31,9 @@
   <script>
     var canvas = document.getElementById("unity-canvas");
     var config = {
-      dataUrl: "Build/MadHeaven.data",
-      frameworkUrl: "Build/MadHeaven.framework.js",
-      codeUrl: "Build/MadHeaven.wasm",
+      dataUrl: "Build/Client.data",
+      frameworkUrl: "Build/Client.framework.js",
+      codeUrl: "Build/Client.wasm",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "MadHeaven",
