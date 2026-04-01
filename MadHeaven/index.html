@@ -74,7 +74,7 @@
       messagingSenderId: "500243194654",
       appId: "1:500243194654:web:cebfdec5df546808a95f0f"
     };
-    firebase.initializeApp(firebaseConfig);
+    const app = firebase.initializeApp(firebaseConfig);
     const database = firebase.database(app);
 
     const canvas = document.querySelector("#unity-canvas");
