@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+const ws = new WebSocket('wss://madheavenwebsocket.onrender.com/');
+
+ws.onopen = () => console.log('WebSocket connected');
+ws.onmessage = (event) => console.log('Received vote count:', event.data);
+ws.onclose = () => console.log('WebSocket disconnected');
+ws.onerror = (err) => console.error('WebSocket error:', err);
+
+// ボタンで送信
+function sendVote() {
+  ws.send(JSON.stringify({playerId:1, action:"vote"}));
+}
+</script>
+
+<button onclick="sendVote()">Send Vote</button>
+</body>
+</html>
