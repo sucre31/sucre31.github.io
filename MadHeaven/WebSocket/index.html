@@ -1,20 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>WebSocket Test</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+
+  button {
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    touch-action: manipulation; /* iOSのクリック遅延対策 */
+    transition: transform 0.05s, background-color 0.05s;
+  }
+
+  button:active {
+    background-color: #388E3C;
+    transform: scale(0.97); /* 押下感を演出 */
+  }
+</style>
+</head>
 <body>
+
+<button ontouchstart="sendVote();" onclick="sendVote();">Send Vote</button>
+
 <script>
-const ws = new WebSocket('wss://madheavenwebsocket.onrender.com/');
+let ws;
+let connected = false;
 
-ws.onopen = () => console.log('WebSocket connected');
-ws.onmessage = (event) => console.log('Received vote count:', event.data);
-ws.onclose = () => console.log('WebSocket disconnected');
-ws.onerror = (err) => console.error('WebSocket error:', err);
+function initWS() {
+  ws = new WebSocket('wss://madheavenwebsocket.onrender.com/');
 
-// ボタンで送信
-function sendVote() {
-  ws.send(JSON.stringify({playerId:1, action:"vote"}));
+  ws.onopen = () => {
+    console.log('WebSocket connected');
+    connected = true;
+  };
+
+  ws.onmessage = (event) => console.log('Received vote count:', event.data);
+
+  ws.onclose = () => {
+    console.log('WebSocket disconnected');
+    connected = false;
+  };
+
+  ws.onerror = (err) => console.error('WebSocket error:', err);
 }
+
+function sendVote() {
+  if (!connected) {
+    console.log("Still connecting, try again in a moment.");
+    return;
+  }
+  ws.send(JSON.stringify({playerId:1, action:"vote"}));
+  console.log("Vote sent");
+}
+
+// ページ読み込み時にWebSocket接続
+window.onload = initWS;
 </script>
 
-<button onclick="sendVote()">Send Vote</button>
 </body>
 </html>
