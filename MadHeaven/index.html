@@ -64,6 +64,34 @@
   <script src="Build/MadHeaven.loader.js"></script>
 
   <script>
+    window.accelX = 0;
+    window.accelY = 0;
+    window.accelZ = 0;
+
+    function startMotion() {
+      window.addEventListener("devicemotion", (event) => {
+        window.accelX = event.accelerationIncludingGravity.x || 0;
+        window.accelY = event.accelerationIncludingGravity.y || 0;
+        window.accelZ = event.accelerationIncludingGravity.z || 0;
+      });
+    }
+
+    function requestMotionPermission() {
+      if (typeof DeviceMotionEvent.requestPermission === "function") {
+        // iOS
+        DeviceMotionEvent.requestPermission().then(state => {
+          if (state === "granted") {
+            startMotion();
+          } else {
+            alert("モーション許可が必要です");
+          }
+        });
+      } else {
+        // Android
+        startMotion();
+      }
+    }
+
     // Firebase初期化
     const firebaseConfig = {
       apiKey: "AIzaSyDI5aKExC5eWG8vDXwnt9aojBY-9V8_eZg",
@@ -103,5 +131,15 @@
       alert("エラー:\n" + message);
     });
   </script>
+
+  <button id="motionBtn" style="
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:10;
+    padding:10px;
+  ">
+    Enable Motion
+  </button>  
 </body>
 </html>
